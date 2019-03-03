@@ -324,7 +324,7 @@ namespace clausewitz_performance_data_logger
         /// <summary>
         ///     Reads game speed from memory.
         /// </summary>
-        /// <returns>Int32 value merged with Boolean value, represented as byte array.</returns>
+        /// <returns>Int32 value represented as byte array.</returns>
         private byte[] GetGameSpeed()
         {
             uint size = _gameSpeedArraySize;
@@ -335,7 +335,7 @@ namespace clausewitz_performance_data_logger
         /// <summary>
         ///     Reads game state from memory.
         /// </summary>
-        /// <returns>Int32 value merged with Boolean value, represented as byte array.</returns>
+        /// <returns>Boolean value represented as byte array.</returns>
         private byte[] GetGameState()
         {
             uint size = _gameStateArraySize;
