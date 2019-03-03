@@ -1,5 +1,5 @@
 # clausewitz-performance-data-logger
-This is a collection of tools merged with an UI in hopes of making it more user-friendly. It aimss to work with any modern game built on Clausewitz engine, but currently only fully supporting Stellaris.
+This is a collection of tools merged with an UI in hopes of making it more user-friendly. It aims to work with any modern game built on Clausewitz engine, but currently only fully supporting Stellaris.
 
 # What does it do?
 It consists of two main modules: **data logger** and **save watcher**, which are combined in a single **test session**.
