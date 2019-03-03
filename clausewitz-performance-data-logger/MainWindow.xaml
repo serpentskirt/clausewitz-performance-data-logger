@@ -5,8 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:clausewitz_performance_data_logger"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="cpdl" Height="210" Width="800"
+        ResizeMode="NoResize">
     <Grid>
-        
+        <GroupBox Header="Log" HorizontalAlignment="Left" Width="433" Height="163" Margin="10,0,0,0" VerticalAlignment="Top" >
+            <ScrollViewer local:AutoScroll.AutoScroll="True"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Width="419"
+                      Height="140"
+                      Margin="3,0,0,0"
+                      HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="Log"
+                       HorizontalAlignment="Left"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Top"
+                       Text="{Binding Path=LogText}"/>
+            </ScrollViewer>
+        </GroupBox>
+        <GroupBox Header="Session" HorizontalAlignment="Right" Width="330" Height="105" Margin="0,0,10,0" VerticalAlignment="Top">
+            <Grid>
+                <Label Content="Name" HorizontalAlignment="Left" Margin="3,0,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="NameTextBox" HorizontalAlignment="Left" Height="23" Margin="47,4,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="266" TextChanged="NameTextBox_TextChanged"/>
+                <Label Content="Target" HorizontalAlignment="Left" Margin="3,26,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="TargetTextBox" HorizontalAlignment="Left" Height="23" Margin="47,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="266" IsEnabled="False"/>
+                <Button x:Name="CreateSessionButton" Content="Activate" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,58,0,0" Width="50" Click="CreateSessionButton_Click" IsEnabled="False"/>
+                <Button x:Name="StartButton" Content="Run" HorizontalAlignment="Left" Margin="62,58,0,0" VerticalAlignment="Top" Width="50" IsEnabled="False" Click="StartButton_Click"/>
+                <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="117,58,0,0" VerticalAlignment="Top" Width="50" IsEnabled="False" Click="SaveButton_Click"/>
+                <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Left" Margin="172,58,0,0" VerticalAlignment="Top" Width="50" IsEnabled="False" Click="CloseButton_Click"/>
+                <Button x:Name="OpenButton" Content="View sessions" HorizontalAlignment="Left" Margin="227,58,0,0" VerticalAlignment="Top" Width="86" Click="OpenButton_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Data logger" HorizontalAlignment="Right" Height="53" Margin="0,110,256,0" VerticalAlignment="Top" Width="84">
+            <Grid>
+                <Button x:Name="InitializeDataLoggerButton" Content="Initialize" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Width="62" IsEnabled="False" Click="InitializeDataLoggerButton_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Save watcher" HorizontalAlignment="Right" Height="53" Margin="0,110,165,0" VerticalAlignment="Top" Width="88">
+            <Grid>
+                <Button x:Name="SetupSaveFolderButton" Content="Set folder" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Width="65" IsEnabled="False" Click="SetupSaveFolderButton_Click"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Log converter" HorizontalAlignment="Right" Height="53" Margin="0,110,10,0" VerticalAlignment="Top" Width="152">
+            <Grid>
+                <Label Content="Speed" HorizontalAlignment="Left" Margin="-1,1,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="filterSpeedSelector" HorizontalAlignment="Left" Margin="45,4,0,0" VerticalAlignment="Top" Width="35" IsEnabled="False">
+                    <ComboBoxItem>0</ComboBoxItem>
+                    <ComboBoxItem>1</ComboBoxItem>
+                    <ComboBoxItem>2</ComboBoxItem>
+                    <ComboBoxItem>3</ComboBoxItem>
+                    <ComboBoxItem IsSelected="True">4</ComboBoxItem>
+                </ComboBox>
+                <Button x:Name="ConvertLogButton" Content="Convert" HorizontalAlignment="Left" Margin="85,5,0,0" VerticalAlignment="Top" Width="50" Click="ConvertLogButton_Click" IsEnabled="False"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
