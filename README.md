@@ -46,7 +46,7 @@ The tool *should* be able of not losing captured data in the unfortunate event o
 # Processing the results
 The outcome of the session is a **.csv** file and\or bunch of backed up saved games.
 
-The **.csv** file can be fed to Excel, MATLAB, GNU Octave or other plotting software for visualization. Do note that captured delta is in ticks, divide by 10000 to get value in milliseconds. Due to high data density it is recommended to smoothen the captured data. Sample MATLAB sheet is coming soon.
+The **.csv** file can be fed to Excel, MATLAB, GNU Octave or other plotting software for visualization. Do note that captured delta is in ticks, divide by 10000 to get value in milliseconds. Due to high data density it is recommended to smoothen the captured data. Sample MATLAB sheet is available [here](https://github.com/serpentskirt/cpdl-plot-builder).
 
 Saved games can be used to backtrack where some oddities occurred and to extract additional data (e.g. fleets, pops, resources). Saved games processer is coming soon.
 
@@ -55,5 +55,5 @@ Coming soon.
 
 # TODO
 - `3dstats` command is not suppported by all games, so data logger and log converter should take it into account;
-- merge all *Last files into one snapsot file;
-- proper handling of reloaded games cases for save watcher and log conveter.
+- merge all *Last files into one snapshot file;
+- proper handling of reloaded games cases for save watcher and log converter.
