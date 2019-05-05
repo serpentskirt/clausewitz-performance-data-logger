@@ -85,10 +85,10 @@ namespace clausewitz_performance_data_logger
                                                        Convert.ToInt32(ConfigurationManager.AppSettings["samplingratio"]),
                                                        Convert.ToInt32(ConfigurationManager.AppSettings["refreshrate"]),
                                                        Convert.ToInt32(ConfigurationManager.AppSettings["delay"]),
-                                                       ConfigurationManager.AppSettings["daypointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt32(s, 16)).ToList(),
-                                                       ConfigurationManager.AppSettings["gamespeedpointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt32(s, 16)).ToList(),
-                                                       ConfigurationManager.AppSettings["gamestatepointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt32(s, 16)).ToList(),
-                                                       ConfigurationManager.AppSettings["framearraypointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt32(s, 16)).ToList(),
+                                                       ConfigurationManager.AppSettings["daypointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt64(s, 16)).ToList(),
+                                                       ConfigurationManager.AppSettings["gamespeedpointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt64(s, 16)).ToList(),
+                                                       ConfigurationManager.AppSettings["gamestatepointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt64(s, 16)).ToList(),
+                                                       ConfigurationManager.AppSettings["framearraypointerpath"].Split(new char[] { ',' }).Select(s => Convert.ToInt64(s, 16)).ToList(),
                                                        this.NameTextBox.Text
                                                        );
                 this.CreateSessionButton.IsEnabled = false;

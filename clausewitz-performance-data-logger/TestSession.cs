@@ -73,7 +73,7 @@ namespace clausewitz_performance_data_logger
         /// <param name="gameStatePointerPath">CheatEngine-based pointer list for game state memory address.</param>
         /// <param name="frameTimePointerPath">CheatEngine-based pointer list for frame render times array memory address.</param>
         /// <param name="sessionName">Current session name.</param>
-        private TestSession(int samplingRatio, int refreshRate, int delay, List<int> dayPointerPath, List<int> gameStatePointerPath, List<int> gameSpeedPointerPath, List<int> frameTimePointerPath, string sessionName)
+        private TestSession(int samplingRatio, int refreshRate, int delay, List<long> dayPointerPath, List<long> gameStatePointerPath, List<long> gameSpeedPointerPath, List<long> frameTimePointerPath, string sessionName)
         {
             Directory.CreateDirectory("sessions\\" + sessionName);
             Directory.CreateDirectory("sessions\\" + sessionName + "\\saves");
@@ -101,7 +101,7 @@ namespace clausewitz_performance_data_logger
         /// <param name="frameTimePointerPath">CheatEngine-based pointer list for frame render times array memory address.</param>
         /// <param name="sessionName">Current session name.</param>
         /// <returns>The single class instance.</returns>
-        public static TestSession SetInstance(int samplingRatio, int refreshRate, int delay, List<int> dayPointerPath, List<int> gameSpeedPointerPath, List<int> gameStatePointerPath, List<int> frameTimePointerPath, string sessionName)
+        public static TestSession SetInstance(int samplingRatio, int refreshRate, int delay, List<long> dayPointerPath, List<long> gameSpeedPointerPath, List<long> gameStatePointerPath, List<long> frameTimePointerPath, string sessionName)
         {
             return _instance ?? (_instance = new TestSession(samplingRatio, refreshRate, delay, dayPointerPath, gameSpeedPointerPath, gameStatePointerPath, frameTimePointerPath, sessionName));
         }

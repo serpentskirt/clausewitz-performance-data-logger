@@ -52,22 +52,22 @@ namespace clausewitz_performance_data_logger
         /// <summary>
         ///     CheatEngine-based pointer list for day memory address.
         /// </summary>
-        private readonly List<int> _dayPointerPath;
+        private readonly List<long> _dayPointerPath;
 
         /// <summary>
         ///     CheatEngine-based pointer list for game speed memory address.
         /// </summary>
-        private readonly List<int> _gameSpeedPointerPath;
+        private readonly List<long> _gameSpeedPointerPath;
 
         /// <summary>
         ///     CheatEngine-based pointer list for game state memory address.
         /// </summary>
-        private readonly List<int> _gameStatePointerPath;
+        private readonly List<long> _gameStatePointerPath;
 
         /// <summary>
         ///     CheatEngine-based pointer list for frame render times array memory address.
         /// </summary>
-        private readonly List<int> _frameTimePointerPath;
+        private readonly List<long> _frameTimePointerPath;
 
         /// <summary>
         ///     Day array size.
@@ -157,10 +157,10 @@ namespace clausewitz_performance_data_logger
         /// <param name="frameTimePointerPath">CheatEngine-based pointer list for frame render times array memory address.</param>
         /// <param name="session">Session name.</param>
         private DataLogger(int samplingRatio,
-                           List<int> dayPointerPath,
-                           List<int> gameSpeedPointerPath,
-                           List<int> gameStatePointerPath,
-                           List<int> frameTimePointerPath,
+                           List<long> dayPointerPath,
+                           List<long> gameSpeedPointerPath,
+                           List<long> gameStatePointerPath,
+                           List<long> frameTimePointerPath,
                            string session)
         {
             // Divide by zero check
@@ -197,10 +197,10 @@ namespace clausewitz_performance_data_logger
         /// <param name="session">Session name.</param>
         /// <returns>The single class instance.</returns>
         public static DataLogger SetInstance(int samplingRatio,
-                                             List<int> dayPointerPath,
-                                             List<int> gameSpeedPointerPath,
-                                             List<int> gameStatePointerPath,
-                                             List<int> frameTimePointerPath,
+                                             List<long> dayPointerPath,
+                                             List<long> gameSpeedPointerPath,
+                                             List<long> gameStatePointerPath,
+                                             List<long> frameTimePointerPath,
                                              string session)
         {
             return _instance ?? (_instance = new DataLogger(samplingRatio,
@@ -318,7 +318,7 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _dayArraySize;
             byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_dayPointerPath), size, out int readBytes);
+            return _m.ReadAddress(_m.FollowPointerPath(_dayPointerPath), size, out long readBytes);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _gameSpeedArraySize;
             byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_gameSpeedPointerPath), size, out int readBytes);
+            return _m.ReadAddress(_m.FollowPointerPath(_gameSpeedPointerPath), size, out long readBytes);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _gameStateArraySize;
             byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_gameStatePointerPath), size, out int readBytes);
+            return _m.ReadAddress(_m.FollowPointerPath(_gameStatePointerPath), size, out long readBytes);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace clausewitz_performance_data_logger
 
             for (int i = 0; i < renderedFramesArraySize; i++)
             {
-                frames += BitConverter.ToSingle(_m.ReadAddress(_m.FollowPointerPath(_frameTimePointerPath) + (i * (int)size), size, out int readBytes), 0);
+                frames += BitConverter.ToSingle(_m.ReadAddress(_m.FollowPointerPath(_frameTimePointerPath) + (i * (int)size), size, out long readBytes), 0);
             }
 
             // That's probably not necessary
