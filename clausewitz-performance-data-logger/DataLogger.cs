@@ -318,7 +318,7 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _dayArraySize;
             byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_dayPointerPath), size, out long readBytes);
+            return _m.ReadAddress(_m.FollowPointerPath(_dayPointerPath), size, out int readBytes);
         }
 
         /// <summary>
@@ -329,7 +329,7 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _gameSpeedArraySize;
             byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_gameSpeedPointerPath), size, out long readBytes);
+            return _m.ReadAddress(_m.FollowPointerPath(_gameSpeedPointerPath), size, out int readBytes);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _gameStateArraySize;
             byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_gameStatePointerPath), size, out long readBytes);
+            return _m.ReadAddress(_m.FollowPointerPath(_gameStatePointerPath), size, out int readBytes);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace clausewitz_performance_data_logger
 
             for (int i = 0; i < renderedFramesArraySize; i++)
             {
-                frames += BitConverter.ToSingle(_m.ReadAddress(_m.FollowPointerPath(_frameTimePointerPath) + (i * (int)size), size, out long readBytes), 0);
+                frames += BitConverter.ToSingle(_m.ReadAddress(_m.FollowPointerPath(_frameTimePointerPath) + (i * (int)size), size, out int readBytes), 0);
             }
 
             // That's probably not necessary

@@ -118,7 +118,7 @@ namespace clausewitz_performance_data_logger
         /// <param name="bytesToRead">Number of bytes to read.</param>
         /// <param name="bytesRead">Variable to write read bytes to.</param>
         /// <returns>Array of read bytes or [0, 0, 0, 0] in case of failure.</returns>
-        public byte[] ReadAddress(IntPtr memoryAddress, uint bytesToRead, out long bytesRead)
+        public byte[] ReadAddress(IntPtr memoryAddress, uint bytesToRead, out int bytesRead)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace clausewitz_performance_data_logger
                 {
                     var buffer = new byte[bytesToRead];
                     ReadProcessMemory(_processHandle, memoryAddress, buffer, bytesToRead, out IntPtr ptrBytesReaded);
-                    bytesRead = ptrBytesReaded.ToInt64();
+                    bytesRead = ptrBytesReaded.ToInt32();
                     return buffer;
                 }
                 bytesRead = 0;
@@ -173,7 +173,7 @@ namespace clausewitz_performance_data_logger
                 if (++i < count)
                 {
                     currentPointer += pointer;
-                    currentPointer = BitConverter.ToInt64(ReadAddress((IntPtr)currentPointer, 8, out long readBytes), 0);
+                    currentPointer = BitConverter.ToInt64(ReadAddress((IntPtr)currentPointer, 8, out int readBytes), 0);
                 }
                 else
                     currentPointer += pointer;
