@@ -130,12 +130,12 @@ namespace clausewitz_performance_data_logger
                     return buffer;
                 }
                 bytesRead = 0;
-                return new byte[] { 0, 0, 0, 0 };
+                return new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
             }
             catch
             {
                 bytesRead = 0;
-                return new byte[] { 0, 0, 0, 0 };
+                return new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
             }
         }
 
@@ -161,10 +161,10 @@ namespace clausewitz_performance_data_logger
         /// </summary>
         /// <param name="path">List of pointers to follow, last element is an offset to be added to the final result.</param>
         /// <returns>Memory address pointers point to.</returns>
-        public IntPtr FollowPointerPath(List<int> path)
+        public IntPtr FollowPointerPath(List<long> path)
         {
             IntPtr result;
-            int currentPointer = _targetProcess.MainModule.BaseAddress.ToInt32();
+            long currentPointer = _targetProcess.MainModule.BaseAddress.ToInt64();
             int i = 0;
             int count = path.Count;
 
@@ -173,7 +173,7 @@ namespace clausewitz_performance_data_logger
                 if (++i < count)
                 {
                     currentPointer += pointer;
-                    currentPointer = BitConverter.ToInt32(ReadAddress((IntPtr)currentPointer, 4, out int readBytes), 0);
+                    currentPointer = BitConverter.ToInt64(ReadAddress((IntPtr)currentPointer, 8, out int readBytes), 0);
                 }
                 else
                     currentPointer += pointer;
