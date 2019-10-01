@@ -30,6 +30,16 @@ namespace clausewitz_performance_data_logger
         private BinaryWriter _logWriter;
 
         /// <summary>
+        ///     Game's process.
+        /// </summary>
+        private Process _process;
+
+        /// <summary>
+        ///     I/O performance counter.
+        /// </summary>
+        private PerformanceCounter _iopc;
+
+        /// <summary>
         ///     Data logger's sampling ratio in [Hz].
         /// </summary>
         private readonly int _samplingRatio;
@@ -90,6 +100,21 @@ namespace clausewitz_performance_data_logger
         private const int _fpsArraySize = 4;
 
         /// <summary>
+        ///     Paged memory array size.
+        /// </summary>
+        private const int _pagedMemorySizeArraySize = 8;
+
+        /// <summary>
+        ///     Virtual memory array size.
+        /// </summary>
+        private const int _virtualMemorySizeArraySize = 8;
+
+        /// <summary>
+        ///     IO data array size.
+        /// </summary>
+        private const int _ioDataArraySize = 8;
+
+        /// <summary>
         ///     Session path.
         /// </summary>
         private readonly string _path;
@@ -133,6 +158,36 @@ namespace clausewitz_performance_data_logger
         ///     Previously captured FPS.
         /// </summary>
         private byte[] _prevFps;
+
+        /// <summary>
+        ///     Currently captured paged memory size.
+        /// </summary>
+        private byte[] _pagedMemorySize;
+
+        /// <summary>
+        ///     Previously captured paged memory size.
+        /// </summary>
+        private byte[] _prevPagedMemorySize;
+
+        /// <summary>
+        ///     Currently captured virtual memory size.
+        /// </summary>
+        private byte[] _virtualMemorySize;
+
+        /// <summary>
+        ///     Previously captured virtual memory size.
+        /// </summary>
+        private byte[] _prevVirtualMemorySize;
+
+        /// <summary>
+        ///     Currently captured IO data.
+        /// </summary>
+        private byte[] _ioData;
+
+        /// <summary>
+        ///     Previously captured IO data.
+        /// </summary>
+        private byte[] _prevIOData;
 
         #endregion
 
@@ -256,8 +311,6 @@ namespace clausewitz_performance_data_logger
         /// <param name="targetProcess">Process name.</param>
         public void Initialize(string targetProcess)
         {
-            Process process;
-
             Process[] p = Process.GetProcessesByName(targetProcess);
 
             if (p.Length <= 0)
@@ -266,8 +319,9 @@ namespace clausewitz_performance_data_logger
                 throw new NotImplementedException("Multiple processes are not supported.");
             else
             {
-                process = p[0];
-                _m = MemoryInterface.SetInstance(process);
+                _process = p[0];
+                _iopc = new PerformanceCounter("Process", "IO Data Bytes/sec", _process.ProcessName);
+                _m = MemoryInterface.SetInstance(_process);
                 _initialized = true;
             }
         }
@@ -308,6 +362,42 @@ namespace clausewitz_performance_data_logger
             _logWriter.Flush();
             _logWriter.Close();
             _logWriter = new BinaryWriter(File.Open(_path + "\\performance.bin", FileMode.Append));
+        }
+
+        /// <summary>
+        ///     Returns process' paged memory size.
+        /// </summary>
+        /// <returns>Long value represented as byte array.</returns>
+        private byte[] GetPagedMemorySize()
+        {
+            return BitConverter.GetBytes(_process.PagedMemorySize64);
+        }
+
+        /// <summary>
+        ///     Returns process' virtual memory size.
+        /// </summary>
+        /// <returns>Long value represented as byte array.</returns>
+        private byte[] GetVirtualMemorySize()
+        {
+            return BitConverter.GetBytes(_process.VirtualMemorySize64);
+        }
+
+        /// <summary>
+        ///     Returns process' IO data.
+        /// </summary>
+        /// <returns>Float value represented as byte array.</returns>
+        private byte[] GetIOData()
+        {
+            return BitConverter.GetBytes(Math.Round(_iopc.NextValue(), 2));
+        }
+
+        /// <summary>
+        ///     Returns process' IO data.
+        /// </summary>
+        /// <returns>Float value.</returns>
+        private float GetRawIOData()
+        {
+            return _iopc.NextValue();
         }
 
         /// <summary>
@@ -375,13 +465,16 @@ namespace clausewitz_performance_data_logger
         /// <summary>
         ///     Writes captured data to buffer.
         /// </summary>
-        private void WriteLog(byte[] day, byte[] speed, byte[] state, byte[] fps)
+        private void WriteLog(byte[] day, byte[] speed, byte[] state, byte[] fps, byte[] pagedMemorySize, byte[] virtualMemorySize, byte[] ioData)
         {
             _logWriter.Write(day);
             _logWriter.Write(DateTime.UtcNow.Ticks);
             _logWriter.Write(speed);
             _logWriter.Write(state);
             _logWriter.Write(fps);
+            _logWriter.Write(pagedMemorySize);
+            _logWriter.Write(virtualMemorySize);
+            _logWriter.Write(ioData);
         }
 
         /// <summary>
@@ -421,6 +514,18 @@ namespace clausewitz_performance_data_logger
             _fps = new byte[_fpsArraySize];
             _prevFps = new byte[_fpsArraySize];
 
+            _pagedMemorySize = new byte[_pagedMemorySizeArraySize];
+            _prevPagedMemorySize = new byte[_pagedMemorySizeArraySize];
+
+            _virtualMemorySize = new byte[_virtualMemorySizeArraySize];
+            _prevVirtualMemorySize = new byte[_virtualMemorySizeArraySize];
+
+            _ioData = new byte[_ioDataArraySize];
+            _prevIOData = new byte[_ioDataArraySize];
+
+            float accumulator = 0;
+            int accumulatorCounter = 0;
+
             _logWriter = new BinaryWriter(File.Open(_path + "\\performance.bin", FileMode.Append));
 
             // This needs to be merged into one snapshot
@@ -440,16 +545,29 @@ namespace clausewitz_performance_data_logger
                 _gameSpeed = GetGameSpeed();
                 _gameState = GetGameState();
                 _fps = GetFps();
+                _pagedMemorySize = GetPagedMemorySize();
+                _virtualMemorySize = GetVirtualMemorySize();
+                //_ioData = GetIOData();
+                accumulator += GetRawIOData();
+                ++accumulatorCounter;
 
                 if (!ByteArrayCompare(_day, _prevDay) || !ByteArrayCompare(_gameSpeed, _prevGameSpeed) || !ByteArrayCompare(_gameState, _prevGameState))
                 {
-                    WriteLog(_day, _gameSpeed, _gameState, _fps);
+                    _prevIOData = _ioData;
+                    _ioData = BitConverter.GetBytes(Math.Round(accumulator / accumulatorCounter, 2));
+                    accumulator = 0;
+                    accumulatorCounter = 0;
+
+                    WriteLog(_day, _gameSpeed, _gameState, _fps, _pagedMemorySize, _virtualMemorySize, _ioData);
                 }
 
                 _prevDay = _day;
                 _prevGameSpeed = _gameSpeed;
                 _prevGameState = _gameState;
                 _prevFps = _fps;
+                _prevPagedMemorySize = _pagedMemorySize;
+                _prevVirtualMemorySize = _virtualMemorySize;
+                //_prevIOData = _ioData;
 
                 _waitHandler.WaitOne(TimeSpan.FromMilliseconds(_period));
             } while (_running);

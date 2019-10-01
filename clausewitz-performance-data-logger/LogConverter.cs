@@ -11,7 +11,7 @@ namespace clausewitz_performance_data_logger
         /// <summary>
         ///     Binary entry size.
         /// </summary>
-        private const int _size = 21;
+        private const int _size = 45;
 
         /// <summary>
         ///     Captures data from process.
@@ -24,7 +24,7 @@ namespace clausewitz_performance_data_logger
             const char separator = ',';
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("day,delta,fps");
+            sb.AppendLine("day,delta,fps,pagedMemorySize,virtualMemorySize,ioData");
 
             int day                 = 0;
             int prevDay             = 0;
@@ -36,6 +36,9 @@ namespace clausewitz_performance_data_logger
             float fps               = 0;
             long delta              = 0;
             long transitionDelta    = 0;
+            long pagedMemorySize    = 0;
+            long virtualMemorySize  = 0;
+            double ioData            = 0;
 
             for (int i = 0; i < entries; i++)
             {
@@ -55,6 +58,15 @@ namespace clausewitz_performance_data_logger
 
                 // 4 bytes of fps
                 fps = BitConverter.ToSingle(data, i * _size + 17);
+
+                // 8 bytes of paged memory size
+                pagedMemorySize = BitConverter.ToInt64(data, i * _size + 21);
+
+                // 8 bytes of virtual memory size
+                virtualMemorySize = BitConverter.ToInt64(data, i * _size + 29);
+
+                // 8 bytes of I/O data
+                ioData = BitConverter.ToDouble(data, i * _size + 37);
 
                 // Skipping first entry to avoid huge peak
                 if (i == 0) prevDay = day;
@@ -88,6 +100,12 @@ namespace clausewitz_performance_data_logger
                         sb.Append(delta.ToString());
                         sb.Append(separator);
                         sb.Append(fps.ToString());
+                        sb.Append(separator);
+                        sb.Append(pagedMemorySize.ToString());
+                        sb.Append(separator);
+                        sb.Append(virtualMemorySize.ToString());
+                        sb.Append(separator);
+                        sb.Append(ioData.ToString());
 
                         if (i < entries - 1) sb.AppendLine();
                     }

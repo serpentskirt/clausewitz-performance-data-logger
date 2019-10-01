@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.329
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "clausewitz-performance-data-logger", "clausewitz-performance-data-logger\clausewitz-performance-data-logger.csproj", "{04BC895F-974B-4C32-A65B-B193CCA531B5}"
 EndProject
@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		manual.png = manual.png
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "clausewitz-savegame-tokenizer", "..\clausewitz-savegame-tokenizer\clausewitz-savegame-tokenizer\clausewitz-savegame-tokenizer.csproj", "{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "clausewitz-savegame-parser", "..\clausewitz-savegame-parser\clausewitz-savegame-parser\clausewitz-savegame-parser.csproj", "{264C3E51-EAB9-46F6-841E-71B466742BA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,22 @@ Global
 		{04BC895F-974B-4C32-A65B-B193CCA531B5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04BC895F-974B-4C32-A65B-B193CCA531B5}.Release|x64.ActiveCfg = Release|x64
 		{04BC895F-974B-4C32-A65B-B193CCA531B5}.Release|x64.Build.0 = Release|x64
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{D1E70FD7-4CF1-4D22-B030-45341A84A1AD}.Release|x64.Build.0 = Release|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Debug|x64.Build.0 = Debug|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Release|x64.ActiveCfg = Release|Any CPU
+		{264C3E51-EAB9-46F6-841E-71B466742BA3}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
