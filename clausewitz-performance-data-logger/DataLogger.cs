@@ -65,9 +65,19 @@ namespace clausewitz_performance_data_logger
         private readonly List<long> _dayPointerPath;
 
         /// <summary>
+        ///     Pointer to days value in game's memory.
+        /// </summary>
+        private IntPtr _dayPointer;
+
+        /// <summary>
         ///     CheatEngine-based pointer list for game speed memory address.
         /// </summary>
         private readonly List<long> _gameSpeedPointerPath;
+
+        /// <summary>
+        ///     Pointer to game speed memory in game's memory.
+        /// </summary>
+        private IntPtr _gameSpeedPointer;
 
         /// <summary>
         ///     CheatEngine-based pointer list for game state memory address.
@@ -75,9 +85,19 @@ namespace clausewitz_performance_data_logger
         private readonly List<long> _gameStatePointerPath;
 
         /// <summary>
+        ///     Pointer to game state value in game's memory.
+        /// </summary>
+        private IntPtr _gameStatePointer;
+
+        /// <summary>
         ///     CheatEngine-based pointer list for frame render times array memory address.
         /// </summary>
         private readonly List<long> _frameTimePointerPath;
+
+        /// <summary>
+        ///     Pointer to frame time value in game's memory.
+        /// </summary>
+        private IntPtr _frameTimePointer;
 
         /// <summary>
         ///     Day array size.
@@ -322,6 +342,10 @@ namespace clausewitz_performance_data_logger
                 _process = p[0];
                 _iopc = new PerformanceCounter("Process", "IO Data Bytes/sec", _process.ProcessName);
                 _m = MemoryInterface.SetInstance(_process);
+                _dayPointer = _m.FollowPointerPath(_dayPointerPath);
+                _gameSpeedPointer = _m.FollowPointerPath(_gameSpeedPointerPath);
+                _gameStatePointer = _m.FollowPointerPath(_gameStatePointerPath);
+                _frameTimePointer = _m.FollowPointerPath(_frameTimePointerPath);
                 _initialized = true;
             }
         }
@@ -407,8 +431,9 @@ namespace clausewitz_performance_data_logger
         private byte[] GetDay()
         {
             uint size = _dayArraySize;
-            byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_dayPointerPath), size, out int readBytes);
+            // this makes no sense and potentially eats CPU time
+            // byte[] result = new byte[size];
+            return _m.ReadAddress(_dayPointer, size, out _);
         }
 
         /// <summary>
@@ -418,8 +443,9 @@ namespace clausewitz_performance_data_logger
         private byte[] GetGameSpeed()
         {
             uint size = _gameSpeedArraySize;
-            byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_gameSpeedPointerPath), size, out int readBytes);
+            // this makes no sense and potentially eats CPU time
+            // byte[] result = new byte[size];
+            return _m.ReadAddress(_gameSpeedPointer, size, out _);
         }
 
         /// <summary>
@@ -429,8 +455,9 @@ namespace clausewitz_performance_data_logger
         private byte[] GetGameState()
         {
             uint size = _gameStateArraySize;
-            byte[] result = new byte[size];
-            return _m.ReadAddress(_m.FollowPointerPath(_gameStatePointerPath), size, out int readBytes);
+            // this makes no sense and potentially eats CPU time
+            // byte[] result = new byte[size];
+            return _m.ReadAddress(_gameStatePointer, size, out _);
         }
 
         /// <summary>
@@ -441,12 +468,13 @@ namespace clausewitz_performance_data_logger
         {
             uint size = _fpsArraySize;
             uint renderedFramesArraySize = 100;
-            byte[] result = new byte[size];
+            
+            byte[] result;
             float frames = 0;
 
             for (int i = 0; i < renderedFramesArraySize; i++)
             {
-                frames += BitConverter.ToSingle(_m.ReadAddress(_m.FollowPointerPath(_frameTimePointerPath) + (i * (int)size), size, out int readBytes), 0);
+                frames += BitConverter.ToSingle(_m.ReadAddress(_frameTimePointer + (i * (int)size), size, out _), 0);
             }
 
             // That's probably not necessary

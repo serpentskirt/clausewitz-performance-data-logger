@@ -130,12 +130,14 @@ namespace clausewitz_performance_data_logger
                     return buffer;
                 }
                 bytesRead = 0;
-                return new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                return new byte[] { 0, 0, 0, 0 };   // check if this has performance impact
+                                                    // ideally should create an array of bytesToRead size
             }
             catch
             {
                 bytesRead = 0;
-                return new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
+                return new byte[] { 0, 0, 0, 0 };   // check if this has performance impact
+                                                    // ideally should create an array of bytesToRead size
             }
         }
 
