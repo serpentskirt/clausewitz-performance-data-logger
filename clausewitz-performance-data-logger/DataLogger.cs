@@ -557,7 +557,7 @@ namespace clausewitz_performance_data_logger
                     _ioData = BitConverter.GetBytes(Math.Round(accumulator / accumulatorCounter, 2));
                     accumulator = 0;
                     accumulatorCounter = 0;
-
+                    
                     WriteLog(_day, _gameSpeed, _gameState, _fps, _pagedMemorySize, _virtualMemorySize, _ioData);
                 }
 
